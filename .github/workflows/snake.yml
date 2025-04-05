@@ -3,7 +3,7 @@ name: GitHub Snake Game 🐍
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # executa todo dia à meia-noite (UTC)
+    - cron: "0 0 * * *" # roda todo dia à meia-noite (UTC)
 
 jobs:
   generate:
@@ -13,13 +13,21 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Gerar o snake.svg
+      - name: Instalar o Graphviz (requisito do snk)
+        run: sudo apt-get install -y graphviz
+
+      - name: Gerar o arquivo github-snake.svg
         uses: Platane/snk@v3
         with:
           github_user_name: John-San
-          outputs: dist/github-snake.svg
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
 
-      - name: Commit e push do SVG
+      - name: Confirmar arquivos gerados
+        run: ls -R dist
+
+      - name: Commit e push do SVG para o branch output
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
