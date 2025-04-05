@@ -1,5 +1,8 @@
 name: GitHub Snake Game 🐍
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   schedule:
